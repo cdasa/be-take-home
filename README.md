@@ -72,3 +72,5 @@ For example:
 ## Bonus
 
 - Deploy the service in a cloud provider is a plus ( not required )
+
+Enjoy the challenge! 🚀
