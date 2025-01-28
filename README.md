@@ -1,6 +1,10 @@
 ## Fuse take home challenge
 
-The goal of this challenge is to create a back-end service that allows users to list ( in general, and their stocks ) and buy stocks. The service should connect to a vendor ( fake vendor made by fuse) that provides mocked stock data. At the end of every day, the service should generate a report of the transactions that happened that day including the failed transactions and send it by email.
+The goal of this challenge is to develop a back-end service for stock trading operations. The service should integrate with a mock vendor API (provided by Fuse) to:
+
+1. List available stocks and user portfolios
+2. Execute stock purchase transactions
+3. Generate and email daily reports including successful and failed transactions
 
 ## Requirements
 
