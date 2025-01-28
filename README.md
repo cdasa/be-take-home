@@ -15,7 +15,7 @@ The goal of this challenge is to develop a back-end service for stock trading op
 ## Considerations
 
 - The stock vendor changes the stock price every 5 minutes
-- The stock vendor doesn't work all the time, sometimes it will fail to respond
+- The stock vendor doesn't work all the time, sometimes it fails
 
 ## Deliverables
 
@@ -44,9 +44,9 @@ The endpoint should return a list of stocks from the vendor and nextToken to get
     "data": {
         "items": [
          ...stock data
-        ]
+        ],
+         "nextToken": "string"
     }
-    "nextToken": "string"
 }
 ```
 
