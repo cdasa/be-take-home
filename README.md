@@ -1,4 +1,4 @@
-## Fuse take home challenge
+## Fuse take home
 
 The goal of this challenge is to develop a back-end service for stock trading operations. The service should integrate with a mock vendor API (provided by Fuse) to:
 
