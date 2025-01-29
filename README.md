@@ -1,10 +1,11 @@
 ## Fuse take home
 
-The goal of this challenge is to develop a back-end service for stock trading operations. The service should integrate with a mock vendor API (provided by Fuse) to:
+The goal of this challenge is to develop a `backend service` for stock trading operations. The service should integrate with a mock vendor API (provided by Fuse) to:
 
-1. List available stocks and user portfolios
-2. Execute stock purchase transactions
-3. Generate and email daily reports including successful and failed transactions
+1. List available stocks
+2. Get user portfolios (list of their stocks and quantities)
+3. Execute stock purchase transactions
+4. Generate and email daily reports including successful and failed transactions
 
 ## Requirements
 
@@ -24,7 +25,9 @@ The goal of this challenge is to develop a back-end service for stock trading op
 - A `REPORT.md` file with a description of the architecture and the decisions you made
 - Clean commits with clear messages
 
-## API Endpoints
+## Vendor API Endpoints
+
+Fuse provides a mock API for you to use in this challenge. The API has two endpoints:
 
 ### Base URL
 
@@ -52,7 +55,7 @@ The endpoint should return a list of stocks from the vendor and nextToken to get
 
 ### POST /stocks/:symbol/buy
 
-The endpoint should allow the user to buy a stock. The request should have the following body:
+The request should have the following body:
 
 ```
 {
@@ -61,7 +64,7 @@ The endpoint should allow the user to buy a stock. The request should have the f
 }
 ```
 
-You get the stock price from the previous endpoint, if the price is more/less than 2% from the current stock price, the transaction should fail.
+You get the stock price from the previous endpoint, if the price is more/less than 2% from the current stock price, the transaction will fail.
 
 For example:
 
