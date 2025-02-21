@@ -5,7 +5,7 @@ The goal of this challenge is to develop a `backend service` for stock trading o
 1. List available stocks
 2. Get user portfolios (list of their stocks and quantities)
 3. Execute stock purchase transactions
-4. Generate and email daily reports including successful and failed transactions
+4. Generate and send by email daily reports including successful and failed transactions
 
 ## Requirements
 
@@ -16,6 +16,7 @@ The goal of this challenge is to develop a `backend service` for stock trading o
 ## Considerations
 
 - The stock vendor changes the stock price every 5 minutes
+- The stock vendor is not reliable 100% of the time
 
 ## Deliverables
 
