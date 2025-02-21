@@ -16,7 +16,7 @@ The goal of this challenge is to develop a `backend service` for stock trading o
 ## Considerations
 
 - The stock vendor changes the stock price every 5 minutes
-- The stock vendor is not reliable 100% of the time
+- The stock vendor is not reliable 100% all the time
 
 ## Deliverables
 
