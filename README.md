@@ -3,9 +3,11 @@
 The goal of this challenge is to develop a `backend service` for stock trading operations. The service should integrate with a mock vendor API (provided by Fuse) to:
 
 1. List available stocks
-2. Get user portfolios (list of their stocks and quantities)
+2. Get user portfolios (list of their stocks and quantities) 
 3. Execute stock purchase transactions
 4. Generate and send by email daily reports including successful and failed transactions
+
+** Only these 3 endpoints are required and the daily email report process ( NOT user management endpoints like GET/UPDATE/DELETE users are required, neither LIST of transactions ) - Any endpoint outside of these 3, are not taking in consideration.
 
 ## Requirements
 
