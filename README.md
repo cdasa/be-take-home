@@ -7,7 +7,7 @@ The goal of this challenge is to develop a `backend service` for stock trading o
 3. Execute stock purchase transactions
 4. Generate and send by email daily reports including successful and failed transactions
 
-** Only these 3 endpoints are required and the daily email report process ( NOT user management endpoints like GET/UPDATE/DELETE users are required, neither LIST of transactions ) - Any endpoint outside of these 3, are not taking in consideration.
+** Only these 3 endpoints are required and the daily email report process ( NOT user management endpoints like GET/UPDATE/DELETE users are required, neither LIST of transactions ) - Any endpoint outside of these 3, are not taking in consideration. **
 
 ## Requirements
 
