@@ -23,9 +23,10 @@ The goal of this challenge is to develop a `backend service` for stock trading o
 ## Deliverables
 
 - Think this is a real project, so you should deliver a production-ready service
-- The source code of the service in `private repository`, add the user `@skaznowiecki` / `@danielruizr` / `@said-fuse` / `@ezequielbarnes` as a collaborator
+- The source code of the service in `private repository`, add the user `@fredy-fuse` / `@edisongiraldo` / `@said-fuse` / `@ezequielbarnes` as a collaborator
 - A `README.md` file with instructions on how to run the service and any other information you think is relevant
 - A `REPORT.md` file with a description of the architecture and the decisions you made
+- A short video walkthrough (max 3 minutes) showcasing the main working features and explaining your decision-making process.
 - Clean commits with clear messages
 
 ## Vendor API Endpoints
