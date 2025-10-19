@@ -1,171 +1,211 @@
-Fuse Stock Trading Service Report
+# Fuse Stock Trading Service Report
 
-Date: October 19, 2025Author: Chaitanya DasaProject: Fuse Stock Trading ServiceGitHub Repository: [Link to your repo, if applicable]Deployed URL: https://oceanic-bindery-475619-c8.ue.r.appspot.com/
+**Date:** October 19, 2025  
+**Author:** Chaitanya Dasa  
+**Project:** Fuse Stock Trading Service  
+**GitHub Repository:** [Link to your repo, if applicable]  
+**Deployed URL:** [https://oceanic-bindery-475619-c8.ue.r.appspot.com/](https://oceanic-bindery-475619-c8.ue.r.appspot.com/)
 
-Overview
-The Fuse Stock Trading Service is a production-ready Node.js backend application built with Express.js, designed to interact with Fuse's mock vendor API for stock trading operations. It provides RESTful endpoints to list stocks, manage user portfolios, execute buy transactions, retrieve user data, and send daily transaction reports via email. The application integrates MongoDB Atlas for data persistence, Ethereal Email for development email testing, and Swagger UI for interactive API documentation. It is deployed on Google App Engine (GAE) Standard Environment with Node.js 22, meeting all functional and deployment requirements.
+---
 
-App Structure
-The Fuse Stock Trading Service follows a modular, layered architecture with clear separation of concerns, designed for maintainability, scalability, and ease of testing.
+## Overview
 
-Key Components:
+The **Fuse Stock Trading Service** is a production-ready Node.js backend application built with **Express.js**, designed to interact with Fuse's mock vendor API for stock trading operations. It provides RESTful endpoints to list stocks, manage user portfolios, execute buy transactions, retrieve user data, and send daily transaction reports via email.
 
-app.js: The main entry point, initializing Express, middleware (Helmet, CORS, Morgan, Compression), Swagger UI, routes, and MongoDB connection. It includes a GET / route to prevent 404 errors on GAE.
-config/: Manages database connection (database.js) with MongoDB Atlas, using Mongoose for ORM.
-controllers/: Business logic for each endpoint, handling requests and responses.
-middleware/: Custom error handling to standardize API errors.
-models/: Mongoose schemas for User (portfolio) and Transaction (buy records).
-routes/: Defines API endpoints, mapping to controllers.
-services/: External integrations (vendor API via Axios, email via Nodemailer/Ethereal).
-swagger.js: Configures Swagger UI for API documentation.
-app.yaml: GAE configuration with runtime: nodejs22, environment variables, and scaling.
-package.json: Specifies Node.js 22 (engines), dependencies, and "gcp-build": "" to fix the October 2025 buildpack issue.
+The application integrates **MongoDB Atlas** for data persistence, **Ethereal Email** for development email testing, and **Swagger UI** for interactive API documentation. It is deployed on **Google App Engine (GAE)** Standard Environment with **Node.js 22**, meeting all functional and deployment requirements.
 
-Architectural Pattern
-The application follows a Layered Architecture with elements of MVC (Model-View-Controller) and Service-Oriented Design:
+---
 
-Presentation Layer (app.js, routes/):
+## App Structure
 
-Handles HTTP requests/responses via Express.
-Defines API endpoints (/api/stocks, /api/portfolio/:userId, etc.).
-Serves Swagger UI for documentation (/api-docs).
-Includes middleware for security (Helmet), logging (Morgan), CORS, and compression.
+The Fuse Stock Trading Service follows a **modular, layered architecture** with clear separation of concerns, designed for maintainability, scalability, and ease of testing.
 
-Controller Layer (controllers/):
+### Key Components
 
-Contains business logic for each endpoint (e.g., stockController.js fetches stocks, transactionController.js validates buy transactions).
-Maps HTTP requests to service methods, returning standardized JSON responses.
+- **app.js** – Main entry point, initializes Express, middleware (Helmet, CORS, Morgan, Compression), Swagger UI, routes, and MongoDB connection. Includes a `GET /` route to prevent 404 errors on GAE.
+- **config/** – Manages database connection (`database.js`) with MongoDB Atlas using Mongoose ORM.
+- **controllers/** – Business logic for each endpoint, handling requests and responses.
+- **middleware/** – Custom error handling for standardized API responses.
+- **models/** – Mongoose schemas for `User` (portfolio) and `Transaction` (buy records).
+- **routes/** – Defines API endpoints mapped to controllers.
+- **services/** – External integrations (vendor API via Axios, email via Nodemailer/Ethereal).
+- **swagger.js** – Configures Swagger UI for API documentation.
+- **app.yaml** – GAE configuration with `runtime: nodejs22`, environment variables, and scaling.
+- **package.json** – Specifies Node.js 22 engines, dependencies, and `"gcp-build": ""` to fix the October 2025 buildpack issue.
 
-Service Layer (services/):
+---
 
-Encapsulates external integrations:
-vendorApiService.js: Uses Axios with retries to fetch stock data from Fuse’s mock API.
-emailService.js: Sends daily reports via Nodemailer/Ethereal.
+## Architectural Pattern
 
-Abstracts complex logic (e.g., ±2% price tolerance for transactions, email formatting).
+The application follows a **Layered Architecture** with elements of **MVC (Model-View-Controller)** and **Service-Oriented Design**.
 
-Data Access Layer (models/, config/database.js):
+### Presentation Layer (`app.js`, `routes/`)
 
-Uses Mongoose to interact with MongoDB Atlas.
-Defines schemas (User, Transaction) for data consistency.
-Manages database connection with retry logic.
+- Handles HTTP requests/responses via Express.
+- Defines API endpoints (`/api/stocks`, `/api/portfolio/:userId`, etc.).
+- Serves Swagger UI at `/api-docs`.
+- Includes middleware for security (Helmet), logging (Morgan), CORS, and compression.
 
-Cron Job (app.js):
+### Controller Layer (`controllers/`)
 
-Uses node-cron to schedule daily reports at midnight, integrating with emailService.js.
+- Contains business logic for each endpoint.
+- Maps HTTP requests to service methods, returning standardized JSON responses.
 
-This layered approach ensures:
+### Service Layer (`services/`)
 
-Separation of Concerns: Each layer has a single responsibility (e.g., controllers for logic, services for integrations).
-Modularity: Components are independent, allowing easy updates (e.g., swap Ethereal for SendGrid).
-Testability: Controllers and services can be unit-tested in isolation.
-Scalability: Stateless Express routes and MongoDB Atlas support horizontal scaling.
+- Encapsulates external integrations:
+  - `vendorApiService.js` – Uses Axios with retries to fetch stock data from Fuse’s mock API.
+  - `emailService.js` – Sends daily reports via Nodemailer/Ethereal.
+- Abstracts complex logic (e.g., ±2% price tolerance for transactions, email formatting).
 
-Separation of Concerns
+### Data Access Layer (`models/`, `config/database.js`)
+
+- Uses Mongoose to interact with MongoDB Atlas.
+- Defines schemas (`User`, `Transaction`) for data consistency.
+- Manages database connection with retry logic.
+
+### Cron Job (`app.js`)
+
+- Uses `node-cron` to schedule daily reports at midnight, integrating with `emailService.js`.
+
+**Benefits:**
+
+- **Separation of Concerns** – Each layer has a single responsibility.
+- **Modularity** – Components are independent, allowing easy updates.
+- **Testability** – Controllers and services can be unit-tested in isolation.
+- **Scalability** – Stateless routes and MongoDB Atlas support horizontal scaling.
+
+---
+
+## Separation of Concerns
+
 The app separates concerns effectively:
 
-Routing vs. Logic: Routes (routes/index.js) define endpoints, while controllers handle logic, keeping app.js clean.
-Data Models: User and Transaction schemas in models/ isolate database structure from logic.
-External Services: vendorApiService.js and emailService.js encapsulate API calls and email sending, reducing controller complexity.
-Error Handling: Centralized in middleware/errorHandler.js for consistent error responses.
-Configuration: config/database.js and .env/GAE env_variables manage settings separately.
-Documentation: swagger.js isolates Swagger configuration, making API docs maintainable.
+- **Routing vs. Logic:** Routes define endpoints; controllers handle logic.
+- **Data Models:** `User` and `Transaction` schemas isolate database structure.
+- **External Services:** `vendorApiService.js` and `emailService.js` encapsulate external integrations.
+- **Error Handling:** Centralized in `middleware/errorHandler.js`.
+- **Configuration:** Managed via `config/database.js` and environment variables.
+- **Documentation:** `swagger.js` isolates Swagger setup.
 
-This structure aligns with Node.js best practices (e.g., Express documentation, MongoDB Atlas guides), ensuring clarity and extensibility.
-Design Decisions
-Decision to Use Express.js
-Why Express.js:
+This structure aligns with **Node.js best practices**, ensuring clarity and extensibility.
 
-Simplicity and Flexibility: Express is lightweight, offering middleware and routing without imposing rigid conventions (unlike NestJS or Fastify). It suited the project’s need for a quick, RESTful API setup.
-Ecosystem: Extensive middleware (e.g., Helmet, Morgan, CORS) and integrations (e.g., swagger-ui-express) simplified security, logging, and documentation.
-Community and Stability: Express is mature, widely used, and well-documented, ensuring reliability for GAE deployment (confirmed via npm trends and GitHub activity).
-Performance: Sufficient for a low-to-medium traffic API, with compression middleware for optimization.
-Alternatives Considered:
-Fastify: Faster but less middleware support; overkill for this project’s scope.
-NestJS: More structured (TypeScript-based), but steeper learning curve and unnecessary for a simple API.
-Koa: Modern but smaller ecosystem compared to Express.
-Express was chosen for its balance of simplicity, ecosystem, and GAE compatibility (per Google Cloud docs).
+---
 
-Decision to Use MongoDB (Atlas)
-Why MongoDB Atlas:
+## Design Decisions
 
-NoSQL Flexibility: MongoDB’s document model suits the project’s unstructured data (user portfolios, transactions). Schemas (User, Transaction) ensure consistency while allowing future schema evolution.
-Cloud-Native: Atlas provides managed hosting, automatic scaling, and backups, ideal for a small-scale assessment without local database setup.
-Mongoose ORM: Simplifies MongoDB interactions with schemas, validation, and queries, reducing boilerplate (e.g., User.findOne({ userId })).
-GAE Integration: Atlas’s SRV connection string works seamlessly with GAE’s env_variables (after fixing IP whitelist).
-Free Tier: M0 tier (512 MB) is sufficient for testing, with no cost for this project.
-Alternatives Considered:
-PostgreSQL (Cloud SQL): Relational, but overkill for simple key-value data; requires more schema management.
-Firestore: Serverless, but less flexible for complex queries compared to MongoDB.
-Local MongoDB: Requires server setup, less practical than Atlas for cloud deployment.
-Atlas was chosen for its ease of use, scalability, and Node.js compatibility (via Mongoose).
+### Decision to Use Express.js
 
-Challenge Faced: The MongooseServerSelectionError (IP whitelist issue) was resolved by setting Atlas’s IP access to 0.0.0.0/0 for testing, ensuring GAE’s dynamic IPs could connect.
-Decision to Use Ethereal Email
-Why Ethereal Email:
+**Why Express.js:**
 
-Development-Friendly: Ethereal provides a free, temporary email service for testing without requiring a real SMTP server (e.g., Gmail, SendGrid).
-Nodemailer Integration: Works seamlessly with Nodemailer (nodemailer.createTestAccount), generating preview URLs for email verification.
-No Cost or Setup: Ideal for the assessment’s scope, avoiding external service costs or complex configurations.
-Functionality: Supports sending daily transaction reports (GET /api/reports/daily) with preview URLs for verification (e.g., https://ethereal.email/message/...).
-Alternatives Considered:
-SendGrid/Mailgun: Require API keys and paid accounts for production; unnecessary for dev testing.
-Gmail SMTP: Limited by OAuth setup and quotas; less reliable for automated tests.
-Cloud Pub/Sub: Overkill for simple email reports.
-Ethereal was chosen for its simplicity and immediate usability in development, with the option to swap for a production service later.
+- Lightweight, flexible, and unopinionated.
+- Rich middleware ecosystem (Helmet, Morgan, CORS, Swagger).
+- Mature, stable, and compatible with GAE.
+- Optimized performance with compression middleware.
 
-Implementation: services/emailService.js uses Nodemailer to send emails to ADMIN_EMAIL, with cron scheduling in app.js for daily reports.
-Additional Design Decisions
+**Alternatives Considered:**
 
-Swagger UI: Chosen for interactive API documentation, served with local assets (/api-docs-assets) to fix TLS errors (https://127.0.0.1:3000/api-docs/swagger-ui.css).
-Node.js 22: Selected for GAE compatibility and long-term support, with "gcp-build": "" in package.json to address the October 2025 buildpack change (automatic npm run build).
-Middleware:
-Helmet: Enhances security (e.g., XSS protection), with CSP disabled to allow Swagger UI.
-Morgan: Logs requests for debugging.
-CORS: Enables cross-origin requests for potential frontend integration.
-Compression: Reduces response size for performance.
+- **Fastify:** Faster but limited middleware.
+- **NestJS:** TypeScript-heavy and more complex.
+- **Koa:** Modern but smaller ecosystem.
 
-Error Handling: Centralized in middleware/errorHandler.js for consistent JSON error responses.
-Cron: node-cron schedules daily reports, ensuring reliability without external schedulers.
+Express was chosen for its **simplicity, ecosystem, and GAE compatibility**.
 
-Challenges and Solutions
+---
 
-GAE Error 13: Fixed by adding "gcp-build": "" in package.json to disable automatic builds, aligning runtime: nodejs22.
-MongoDB Connection: Resolved by whitelisting 0.0.0.0/0 in Atlas and removing deprecated Mongoose options (useNewUrlParser, useUnifiedTopology).
-404 Error: Added GET / route in app.js to handle GAE’s root URL.
-Swagger UI TLS: Served assets locally via /api-docs-assets to prevent HTTPS errors.
+### Decision to Use MongoDB (Atlas)
 
-Architectural Benefits
+**Why MongoDB Atlas:**
 
-Maintainability: Modular structure (controllers, services, models) simplifies updates.
-Scalability: Stateless Express and MongoDB Atlas support horizontal scaling (configured max_instances: 10 in app.yaml).
-Extensibility: Easy to add new endpoints or swap services (e.g., Ethereal to SendGrid).
-Reliability: Axios retries, Mongoose validation, and error handling ensure robustness.
+- Flexible document model for unstructured data.
+- Managed hosting with automatic scaling and backups.
+- Integrates easily with GAE.
+- Mongoose provides schemas, validation, and query helpers.
+- Free M0 tier suitable for testing.
 
-Deployment and Testing
+**Alternatives Considered:**
 
-Deployment Process:
+- PostgreSQL (too rigid for dynamic schema).
+- Firestore (less flexible for complex queries).
+- Local MongoDB (manual setup required).
 
-Configured app.yaml with runtime: nodejs22 and env_variables.
-Added "gcp-build": "" in package.json to fix buildpack issue.
-Deployed via gcloud app deploy --version=20251019t1800.
-Verified at https://oceanic-bindery-475619-c8.ue.r.appspot.com/.
+**Challenge:**  
+`MongooseServerSelectionError` fixed by allowing Atlas IP access from `0.0.0.0/0`.
 
-Testing:
+---
 
-Local: Tested endpoints via Swagger UI (http://localhost:3000/api-docs).
-GAE: Confirmed functionality with curl and browser tests (/api/stocks, /api/reports/daily).
-MongoDB: Verified transactions in Atlas (db.transactions.find()).
-Email: Confirmed Ethereal preview URLs for daily reports.
+### Decision to Use Ethereal Email
 
-Conclusion
-The Fuse Stock Trading Service delivers a robust, production-ready API that meets all requirements, deployed successfully on GAE. The layered architecture, combined with Express.js, MongoDB Atlas, and Ethereal Email, ensures maintainability, scalability, and ease of testing. All challenges (Error 13, MongoDB connection, 404, TLS) were resolved through targeted configuration updates. The application is fully functional at https://oceanic-bindery-475619-c8.ue.r.appspot.com/, with Swagger UI for testing and Ethereal for email previews.
-Video Walkthrough: A ~3-minute video can demonstrate:
+**Why Ethereal Email:**
 
-Local setup (npm run dev).
-Endpoint testing in Swagger UI (/api-docs).
-Transaction storage in MongoDB Atlas.
-Ethereal Email report preview.
-GAE deployment and live tests.
+- Free, temporary SMTP for development.
+- Seamless Nodemailer integration.
+- Provides email preview URLs for testing.
+- Zero configuration and cost.
 
-Contact: chaitanyadasa1@gmail.com
+**Alternatives Considered:**
+
+- SendGrid/Mailgun (paid).
+- Gmail SMTP (OAuth complexity).
+- Cloud Pub/Sub (overkill).
+
+Implemented in `services/emailService.js` with daily reports scheduled via `node-cron`.
+
+---
+
+### Additional Design Decisions
+
+- **Swagger UI:** Served locally to avoid TLS errors.
+- **Node.js 22:** Required for GAE deployment and long-term support.
+- **Middleware:** Helmet, Morgan, CORS, Compression for security and performance.
+- **Error Handling:** Centralized JSON responses.
+- **Cron Jobs:** Scheduled daily reports via `node-cron`.
+
+---
+
+## Challenges and Solutions
+
+| Challenge            | Solution                                               |
+| -------------------- | ------------------------------------------------------ |
+| GAE Error 13         | Added `"gcp-build": ""` in `package.json`              |
+| MongoDB Connection   | Whitelisted `0.0.0.0/0` and removed deprecated options |
+| 404 Error on Root    | Added `GET /` route                                    |
+| Swagger UI TLS Error | Served assets locally via `/api-docs-assets`           |
+
+---
+
+## Architectural Benefits
+
+- **Maintainability:** Modular code structure.
+- **Scalability:** Stateless and horizontally scalable.
+- **Extensibility:** Easy to replace or add services.
+- **Reliability:** Built-in retries, validation, and error handling.
+
+---
+
+## Deployment and Testing
+
+### Deployment Process
+
+1. Configured `app.yaml` with `runtime: nodejs22` and environment variables.
+2. Added `"gcp-build": ""` in `package.json`.
+3. Deployed via `gcloud app deploy --version=20251019t1800`.
+4. Verified at [https://oceanic-bindery-475619-c8.ue.r.appspot.com/](https://oceanic-bindery-475619-c8.ue.r.appspot.com/).
+
+### Testing
+
+- **Local:** Swagger UI at `http://localhost:3000/api-docs`.
+- **GAE:** Verified with `curl` and browser tests.
+- **MongoDB Atlas:** Verified data with `db.transactions.find()`.
+- **Ethereal Email:** Confirmed preview URLs for daily reports.
+
+---
+
+## Conclusion
+
+The **Fuse Stock Trading Service** delivers a **robust, production-ready API**, successfully deployed on GAE.  
+The layered architecture ensures maintainability, scalability, and testability.  
+All issues (Error 13, MongoDB connection, 404, TLS) were resolved effectively.
+
+**Live Demo:** [https://oceanic-bindery-475619-c8.ue.r.appspot.com/](https://oceanic-bindery-475619-c8.ue.r.appspot.com/)  
+**Contact:** [chaitanyadasa1@gmail.com](mailto:chaitanyadasa1@gmail.com)
