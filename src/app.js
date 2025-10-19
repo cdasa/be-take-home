@@ -3,12 +3,15 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const morgan = require('morgam');
+const morgan = require('morgan');
 const cron = require('node-cron');
 const routes = require('./routes');
 const {errorHandler} = require('./middleware/errorHandler');
 const {sendDailyReport} = require('./services/emailService');
 const {connectDB} = require('./config/database');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +21,16 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan('combined'));
 app.use(express.json());
+
+// Serve Swagger UI assets locally
+app.use('/api-docs-assets', express.static(path.join(__dirname, 'node_modules', 'swagger-ui-dist')));
+
+// Swagger UI with custom options
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCssUrl: '/api-docs-assets/swagger-ui.css',
+  customJs: '/api-docs-assets/swagger-ui-bundle.js',
+  customJsStr: '/api-docs-assets/swagger-ui-standalone-preset.js'
+}));
 
 // ROUTES
 app.use('/api', routes);
@@ -31,20 +44,30 @@ connectDB().then(async () => {
     const existing = await User.countDocuments();
 
     if (existing === 0) {
-        await User.insertMany([
-            { userID: 'user1', email: 'user1@example.com', portfolio: [{symbol: 'AAPL', quantity: 10}]},
-            { userID: 'user2', email: 'user2@example.com', portfolio: [{symbol: 'GOOGL', quantity: 5}]},
-        ]);
-        console.log("Mock users seeded");
+        try{
+            await User.insertMany([
+                { userId: 'user1', email: 'user1@example.com', portfolio: [{symbol: 'AAPL', quantity: 10}]},
+                { userId: 'user2', email: 'user2@example.com', portfolio: [{symbol: 'GOOGL', quantity: 5}]},
+            ]);
+            console.log("Mock users seeded");
+        } catch (err) {
+            console.error('Error seeding mock users:', err);
+        }
+    } else {
+        console.log('Existing users found. Skipping seeding');
     }
+
+    // console.log('Testing daily report on startup');
+    // await sendDailyReport();
 
     cron.schedule('0 0 * * *', () => {
         console.log("Running daily report cron job");
-        sendDailyReport();
+        sendDailyReport(true);
     })
 
     app.listen(PORT, () => {
-        console.log("Server running on Port ${PORT}");
+        console.log(`Server running on port ${PORT}`);
+        console.log(`Swagger UI available at http://127.0.0.1:${PORT}/api-docs`);
     });
 
 });

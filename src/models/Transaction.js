@@ -6,7 +6,7 @@ const transactionScheme = new mongoose.Schema({
     quantity: {type: Number, required: true},
     price: {type: Number, required: true},
     status: {type: String, enum: ['success', 'failed'], required: true},
-    timestamp: {type: DataTransfer, default: Date.now}
+    timestamp: {type: Date, default: Date.now}
 }, {timestamps: true});
 
 module.exports = mongoose.model('Transaction', transactionScheme);

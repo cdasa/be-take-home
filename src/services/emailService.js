@@ -1,18 +1,16 @@
 const nodemailer = require('nodemailer');
 const Transaction = require('../models/Transaction');
-const Transaction = require('../models/Transaction');
 
 const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: false,
+    host: 'smtp.ethereal.email',
+    port: 587,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: 'hayley.zemlak12@ethereal.email',
+        pass: 'VG25EvPRTnqw1zhNSh'
     }
 });
 
-async function sendDailyReport() {
+async function sendDailyReport(isCron = false) {
     try {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -20,7 +18,7 @@ async function sendDailyReport() {
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() +1);
 
-        const Transaction = await Transaction.find({
+        const transactions = await Transaction.find({
             timestamp: { $gte: today, $lt: tomorrow}
         });
 
@@ -31,11 +29,19 @@ async function sendDailyReport() {
             from: process.env.EMAIL_USER,
             to: process.env.ADMIN_EMAIL,
             subject: "Daily Stock Transaction Report",
-            text: 'Successful transactions: ${successful}\nFailed transactions: ${failed}\n\nDetails:\n${JSON.stringify(transactions, null, 2)}'
+            text: `Successful transactions: ${successful}\nFailed transactions: ${failed}\n\nDetails:\n${JSON.stringify(transactions, null, 2)}`
         };
 
-        await transporter.sendMail(mailOptions);
-        console.log('Daily report sent');
+        if (!isCron) {
+            const emailInfo = await transporter.sendMail(mailOptions);
+            console.log('Daily report sent');
+            return emailInfo;
+        } else {
+            await transporter.sendMail(mailOptions);
+            console.log('Daily report sent');
+        }
+        
+
     } catch (error) {
         console.error("Error sending daily report: ", error);
     }

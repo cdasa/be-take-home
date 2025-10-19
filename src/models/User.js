@@ -6,7 +6,7 @@ const portfolioItemSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-    useID: {type: String, required: true, unique: true},
+    userId: {type: String, required: true, unique: true},
     email: {type: String, required: true},
     portfolio: [portfolioItemSchema]
 }, {timestamps: true});
