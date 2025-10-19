@@ -6,34 +6,7 @@ Overview
 The Fuse Stock Trading Service is a production-ready Node.js backend application built with Express.js, designed to interact with Fuse's mock vendor API for stock trading operations. It provides RESTful endpoints to list stocks, manage user portfolios, execute buy transactions, retrieve user data, and send daily transaction reports via email. The application integrates MongoDB Atlas for data persistence, Ethereal Email for development email testing, and Swagger UI for interactive API documentation. It is deployed on Google App Engine (GAE) Standard Environment with Node.js 22, meeting all functional and deployment requirements.
 
 App Structure
-The Fuse Stock Trading Service follows a modular, layered architecture with clear separation of concerns, designed for maintainability, scalability, and ease of testing. The project structure is organized as follows:
-
-fuse-stock-service/
-├── app.yaml # GAE configuration
-├── package.json # Dependencies and scripts
-├── src/
-│ ├── app.js # Entry point, Express setup, middleware, routes
-│ ├── config/
-│ │ └── database.js # MongoDB Atlas connection
-│ ├── controllers/
-│ │ ├── stockController.js # Stock listing logic
-│ │ ├── portfolioController.js # Portfolio retrieval
-│ │ ├── transactionController.js # Buy transaction logic
-│ │ ├── userController.js # User listing
-│ │ └── reportController.js # Daily report generation
-│ ├── middleware/
-│ │ └── errorHandler.js # Centralized error handling
-│ ├── models/
-│ │ ├── User.js # Mongoose schema for users
-│ │ └── Transaction.js # Mongoose schema for transactions
-│ ├── routes/
-│ │ └── index.js # Route definitions
-│ ├── services/
-│ │ ├── vendorApiService.js # Vendor API integration
-│ │ └── emailService.js # Email sending (Ethereal)
-│ └── swagger.js # Swagger API documentation
-├── .env.example # Template for environment variables
-└── README.md # Project documentation
+The Fuse Stock Trading Service follows a modular, layered architecture with clear separation of concerns, designed for maintainability, scalability, and ease of testing.
 
 Key Components:
 
