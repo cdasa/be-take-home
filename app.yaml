@@ -1,0 +1,10 @@
+runtime: nodejs22
+entrypoint: node src/app.js
+env: standard
+automatic_scaling:
+  max_instances: 10
+env_variables:
+  MONGODB_URI: "mongodb+srv://chaitanyadasa1_db_user:HoRyVoDDFtIN9oXu@fuseassessment.z4t7chl.mongodb.net/fuse-assessment?retryWrites=true&w=majority"
+  VENDOR_API_KEY: "nSbPbFJfe95BFZufiDwF32UhqZLEVQ5K4wdtJI2e"
+  ADMIN_EMAIL: "chaitanyadasa1@gmail.com"
+  PORT: "8080"

@@ -1,82 +1,67 @@
-## Fuse take home
+# Fuse Stock Trading Service
 
-The goal of this challenge is to develop a `backend service` for stock trading operations. The service should integrate with a mock vendor API (provided by Fuse) to:
+A production-ready Node.js backend for stock trading operations with Fuse vendor API integration.
 
-1. List available stocks
-2. Get user portfolios (list of their stocks and quantities) 
-3. Execute stock purchase transactions
-4. Generate and send by email daily reports including successful and failed transactions
+## Features
 
-** Only these 3 endpoints are required and the daily email report process ( NOT user management endpoints like GET/UPDATE/DELETE users are required, neither LIST of transactions ) - Any endpoint outside of these 3, are not taking in consideration. **
+- List paginated stocks.
+- View user portfolios.
+- Execute stock purchases with 2% price tolerance.
+- List all users.
+- Daily email reports (Ethereal in dev).
+- Swagger UI documentation.
 
-## Requirements
+## Prerequisites
 
-- The service should be written in Node.js ( any framework is allowed )
-- The service has to run locally and should be able to be started in simple steps ( if it doesn't run, it doesn't pass the challenge )
-- Feel free to create and use any kind of architecture / db / infrastructure you want
+- Node.js v18+
+- MongoDB Atlas
+- Google Cloud SDK for GAE
 
-## Considerations
+## Setup (Local)
 
-- The stock vendor changes the stock price every 5 minutes
-- The stock vendor is not reliable 100% all the time
+1. Clone repo.
+2. `npm install`
+3. Copy `.env.example` to `.env` and update:
+   - `MONGODB_URI`: Atlas URI (allow 0.0.0.0/0 for testing).
+   - `VENDOR_API_KEY`: `nSbPbFJfe95BFZufiDwF32UhqZLEVQ5K4wdtJI2e`
+   - `ADMIN_EMAIL`: `admin@example.com`
+   - `PORT`: 3000
+4. `npm run dev`
+5. API: `http://localhost:3000/api`
+6. Swagger UI: `http://localhost:3000/api-docs`
 
-## Deliverables
+## Deployment (Google App Engine)
 
-- Think this is a real project, so you should deliver a production-ready service
-- The source code of the service in `private repository`, add the user `@fredy-fuse` / `@edisongiraldo` / `@said-fuse` / `@ezequielbarnes` as a collaborator
-- A `README.md` file with instructions on how to run the service and any other information you think is relevant
-- A `REPORT.md` file with a description of the architecture and the decisions you made
-- A short video walkthrough (max 3 minutes) showcasing the main working features and explaining your decision-making process.
-- Clean commits with clear messages
+1. Install Google Cloud SDK: https://cloud.google.com/sdk/docs/install
+2. Auth: `gcloud auth login`
+3. Set project: `gcloud config set project oceanic-bindery-475619-c8`
+4. Initialize: `gcloud app create --region=us-central`
+5. Update `app.yaml` (runtime: nodejs18, entrypoint: node src/app.js, env_variables).
+6. Add `"gcp-build": ""` to `package.json` scripts (fixes auto-build error).
+7. Deploy: `gcloud app deploy --verbosity=debug`
+8. Access: `https://oceanic-bindery-475619-c8.ue.r.appspot.com/`
+9. Logs: `gcloud app logs tail -s default`
 
-## Vendor API Endpoints
+## Endpoints
 
-Fuse provides a mock API for you to use in this challenge. The API has two endpoints:
+- `GET /` - Welcome.
+- `GET /api/stocks` - List stocks.
+- `GET /api/portfolio/:userId` - Portfolio.
+- `POST /api/transactions/buy` - Buy stock.
+- `GET /api/users/all-users` - List users.
+- `GET /api/reports/daily` - Send report.
+- `GET /api-docs` - Swagger UI.
 
-### Base URL
+## Testing
 
-`https://api.challenge.fusefinance.com`
+- Local: `npm run dev`; test in Swagger UI.
+- GAE: Check logs for "MongoDB Atlas connected".
+- Transactions: `db.transactions.find()` in Atlas.
+- Email: Check Ethereal preview URL from `/api/reports/daily`.
 
-### API-KEY
+## Notes
 
-You should add the `x-api-key` header with the value `nSbPbFJfe95BFZufiDwF32UhqZLEVQ5K4wdtJI2e`
-
-### GET /stocks
-
-The endpoint should return a list of stocks from the vendor and nextToken to get the next page. To get the next page, you should add the `nextToken` as a query parameter.
-
-```
-{
-    "status": 200,
-    "data": {
-        "items": [
-         ...stock data
-        ],
-         "nextToken": "string"
-    }
-}
-```
-
-### POST /stocks/:symbol/buy
-
-The request should have the following body:
-
-```
-{
-    "price": 220.67,
-    "quantity": 1
-}
-```
-
-You get the stock price from the previous endpoint, if the price is more/less than 2% from the current stock price, the transaction will fail.
-
-For example:
-
-- If the stock price is 100, and the user tries to buy it for 95, the transaction should fail because it's more than 2% of the stock price
-- If the stock price is 100, and the user tries to buy it for 98.5, the transaction should succeed because it's less than 2% of the stock price
-
-## Bonus
-
-- Deploy the service in a cloud provider is a plus ( not required )
-
-Enjoy the challenge! 🚀
+- GAE Error 13 Fix: `"gcp-build": ""` in `package.json` disables auto `npm run build`.
+- Runtime: nodejs18 (add `"engines": { "node": "18.x" }` in package.json).
+- Env Vars: Set in `app.yaml` or GAE Console (GAE ignores `.env`).
+- Scaling: `max_instances: 10` in `app.yaml`.

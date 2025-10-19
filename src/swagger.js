@@ -11,6 +11,10 @@ const swaggerDefinition = {
         {
             url: 'http://127.0.0.1:3000/api',
             description: 'Localhost Development Server'
+        },
+        {
+            url: 'https://oceanic-bindery-475619-c8.ue.r.appspot.com',
+            description: 'GAE Deployment'
         }
     ],
     components: {

@@ -24,8 +24,8 @@ const apiClient = axios.create({
 
 axiosRetry(apiClient, {
     retries: 3,
-    retruDelay: axiosRetry.exponentialDelay,
-    retruConditions: (error) => {
+    retryDelay: axiosRetry.exponentialDelay,
+    retryConditions: (error) => {
         console.log('Retry condition check: ', error.response?.status || 'Network error');
         return error.response?.status >= 500 || !error.response;
     }

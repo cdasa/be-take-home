@@ -14,13 +14,28 @@ const swaggerSpec = require('./swagger');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 // MIDDLEWARE
 app.use(helmet());
 app.use(cors());
 app.use(morgan('combined'));
 app.use(express.json());
+
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Welcome to Fuse Stock Trading Service API',
+        version: '1.0.0',
+        endpoints: [
+        '/api/stocks - List stocks',
+        '/api/portfolio/:userId - Get portfolio',
+        '/api/transactions/buy - Purchase stock',
+        '/api/users/all-users - List all users',
+        '/api/reports/daily - Trigger daily report',
+        '/api-docs - Swagger UI documentation'
+        ]
+    });
+});
 
 // Serve Swagger UI assets locally
 app.use('/api-docs-assets', express.static(path.join(__dirname, 'node_modules', 'swagger-ui-dist')));
